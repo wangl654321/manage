@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
+    <wb-module deploy-name="manage_web">
+        <wb-resource deploy-path="/" source-path="/target/m2e-wtp/web-resources"/>
+        <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
+        <dependent-module archiveName="manage_module-1.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/manage_module/manage_module">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="ngp_common-1.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/ngp_common/ngp_common">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="manage_service-1.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/manage_service/manage_service">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <property name="context-root" value="manage_web"/>
+        <property name="java-output-path" value="/manage_web/target/classes"/>
+    </wb-module>
+</project-modules>
