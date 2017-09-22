@@ -560,7 +560,7 @@
                         </li>
 
                         <li>
-                            <a href="../invoice.html">
+                            <a href="${ctx}/bootstrap/shopCard">
                                 <i class="icon-double-angle-right"></i>
                                 购物车
                             </a>
