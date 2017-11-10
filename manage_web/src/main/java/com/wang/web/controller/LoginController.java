@@ -58,7 +58,7 @@ public class LoginController {
         if(null == sysUser.getPassword()){
             return "bootstrap/login/login";
         }
-        logger.info("用户登录--->{}");
+        logger.info("用户登录--->{首页}");
         HttpSession session = request.getSession();
         //查询数据库
         sysUser.setPassword(MD5.getMd5Str(sysUser.getPassword()));
