@@ -1,7 +1,7 @@
 package com.wang.web.controller;
 
-import com.wang.module.entity.User;
-import com.wang.module.service.UserService;
+import com.wang.module.entity.SysUser;
+import com.wang.module.service.SysUserService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +36,7 @@ public class UserMoreController {
     private static final Logger logger = LogManager.getLogger();
 
     @Autowired
-    private UserService userService;
+    private SysUserService sysUserService;
 
     /**
      * @方法说明：登录跳转
@@ -44,13 +44,13 @@ public class UserMoreController {
      * @创建人：wangl
      */
     @RequestMapping(value = "/user")
-    public String login(User user, HttpServletRequest request, Model model) {
+    public String login(SysUser sysUser, HttpServletRequest request, Model model) {
 
         logger.info("方法调用成功--->{}");
-        user = userService.getEntity(2L);
-        logger.info("方法调用成功--->{}",user.getName());
+        sysUser = sysUserService.getEntity(2);
+        logger.info("方法调用成功--->{}",sysUser.getName());
 
-        model.addAttribute("user",user);
+        model.addAttribute("user",sysUser);
 
         return "welcome";
     }
@@ -62,7 +62,7 @@ public class UserMoreController {
      * @创建人：wangl
      */
     @RequestMapping(value = "/bootstrap")
-    public String bootstrap(User user, HttpServletRequest request, Model model) {
+    public String bootstrap(SysUser user, HttpServletRequest request, Model model) {
 
 
         return "bootstrap/museum";

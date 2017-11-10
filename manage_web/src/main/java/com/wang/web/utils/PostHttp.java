@@ -1,4 +1,4 @@
-package com.wang.module;
+package com.wang.web.utils;
 
 import com.heepay.common.util.HttpClientUtils;
 
@@ -28,12 +28,12 @@ public class PostHttp {
 
     public static void main(String[] args) {
 
-        for (int j = 0; j < 700; j++) {
+        for (int j = 0; j < 500; j++) {
             Thread th = new Thread() {
                 @Override
                 public void run() {
                     lock.lock();
-                    HttpClientUtils.requestByPostMethod("");
+                    HttpClientUtils.requestByPostMethod("http://chengdu.gmgc.info/toupiao/index.php?cid=2050&type=21&c_type=54");
                     lock.unlock();
 
                 }

@@ -1,15 +1,14 @@
 package com.wang.web.controller;
 
 import com.heepay.codec.Md5;
-import com.wang.module.entity.User;
-import com.wang.module.service.UserService;
+import com.wang.module.entity.SysUser;
+import com.wang.module.service.SysUserService;
+import com.wang.web.utils.MD5;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.AuthenticationException;
-import org.apache.shiro.authc.UsernamePasswordToken;
-import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -44,7 +43,7 @@ public class LoginController {
     private static final Logger logger = LogManager.getLogger();
 
     @Autowired
-    private UserService userService;
+    private SysUserService sysUserService;
 
 
     /**
@@ -53,51 +52,42 @@ public class LoginController {
      * @创建人：wangl
      */
     @RequestMapping(value = "/login")
-    public String login(User user, Model model,
+    public String login(SysUser sysUser, Model model,
                         HttpServletRequest request) {
 
-       /* logger.info("用户登录--->{}");
-        Subject currentUser = SecurityUtils.getSubject();
 
-        if (!currentUser.isAuthenticated()) {
-            // 把用户名和密码封装为 UsernamePasswordToken 对象
-            UsernamePasswordToken token = null;
-            try {
-                Double.parseDouble(user.getName());
-                user.setPhone(user.getName());
-                token = new UsernamePasswordToken(user.getPhone(), user.getPassword());
-            } catch (NumberFormatException e) {
-                user.setEmail(user.getName());
-                token = new UsernamePasswordToken(user.getEmail(), user.getPassword());
-            }
 
-            // 记住我
-            token.setRememberMe(true);
-            try {
-                currentUser.login(token);
+        if(null == sysUser.getPassword()){
+            return "bootstrap/login/login";
+        }
+        logger.info("用户登录--->{}");
+        HttpSession session = request.getSession();
+        //查询数据库
+        sysUser.setPassword(MD5.getMd5Str(sysUser.getPassword()));
+        SysUser entity = sysUserService.getEntityByLogin(sysUser);
+        if(null != entity) {
+            session.setAttribute("loginSysUser", entity);
+            //登录成功
+            return "bootstrap/index/index";
+        }
 
-            }
-            // 所有认证时异常的父类.
-            catch (AuthenticationException ae) {
-            }
-        }*/
-
-        //登录成功
-        return "bootstrap/index/index";
+        //没有用户重新登陆
+        model.addAttribute("loginMessage", "用户名密码错误");
+        return "bootstrap/login/login";
     }
     /**
      * @方法说明：用户退出
      * @时间： 2017-04-14 11:40 AM
      * @创建人：wangl
-     *//*
+     */
     @RequestMapping(value = "/loginOut")
     public String loginOut(HttpServletRequest request) {
 
-        logger.info("用户用户退出--->{}");
+        logger.info("用户用户退出");
         HttpSession session = request.getSession();
-        session.removeAttribute("loginUser");
-        return "redirect:/";
-    }*/
+        session.removeAttribute("loginSysUser");
+        return "bootstrap/login/login";
+    }
 
     /**
      * @方法说明：用户找回密码
@@ -105,7 +95,7 @@ public class LoginController {
      * @创建人：wangl
      */
     @RequestMapping(value = "/forgot")
-    public String forgot(User user, Model model) {
+    public String forgot(SysUser user, Model model) {
         logger.info("用户找回密码跳转--->{}");
         model.addAttribute("user", user);
         return "bootstrap/login/forgot";
@@ -117,7 +107,7 @@ public class LoginController {
      * @创建人：wangl
      */
     @RequestMapping(value = "/register")
-    public String register(User user, Model model) {
+    public String register(SysUser user, Model model) {
         logger.info("用户注册跳转--->{}");
 
         model.addAttribute("user", user);
@@ -130,10 +120,10 @@ public class LoginController {
      * @创建人：wangl
      */
     @RequestMapping(value = "/save")
-    public String save(User user, Model model) {
+    public String save(SysUser user, Model model) {
         logger.info("用户注册--->{}");
         user.setPassword(Md5.encode(user.getPassword()));
-        userService.insert(user);
+        sysUserService.saveEntity(user);
         return "redirect:/";
     }
 
@@ -145,7 +135,7 @@ public class LoginController {
      */
     @ResponseBody
     @RequestMapping(value = "/validation")
-    public int validation(@RequestParam(value = "value") String value, User user) {
+    public int validation(@RequestParam(value = "value") String value, SysUser user) {
 
         logger.info("邮箱或者手机号是否存在验证--->{}", value);
         try {
@@ -157,7 +147,7 @@ public class LoginController {
             user.setEmail(value);
         }
 
-        int num = userService.countNum(user);
+        int num = sysUserService.countNum(user);
         return num;
     }
 

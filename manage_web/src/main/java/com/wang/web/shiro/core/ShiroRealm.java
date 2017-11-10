@@ -1,7 +1,7 @@
 package com.wang.web.shiro.core;
 
-import com.wang.module.entity.User;
-import com.wang.module.service.UserService;
+import com.wang.module.entity.SysUser;
+import com.wang.module.service.SysUserService;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
@@ -17,7 +17,7 @@ import java.util.Set;
 public class ShiroRealm extends AuthorizingRealm {
 
     @Autowired
-    private UserService userService;
+    private SysUserService userService;
 
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
@@ -29,12 +29,12 @@ public class ShiroRealm extends AuthorizingRealm {
         String username = upToken.getUsername();
         String s = upToken.getPassword().toString();
 
-        User user = new User();
+        SysUser user = new SysUser();
         user.setEmail(username);
 
         String passwd = resultPasswd(username, upToken.getPassword().toString());
         user.setPassword(passwd);
-        User entity = userService.getEntityBySele(user);
+        SysUser entity = userService.getEntityByLogin(user);
 
         //4. 若用户不存在, 则可以抛出 UnknownAccountException 异常
         if(null == entity){

@@ -1,6 +1,6 @@
 package com.wang.web.controller;
 
-import com.wang.module.entity.User;
+import com.wang.module.entity.SysUser;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Controller;
@@ -39,7 +39,7 @@ public class ShopCard {
      * @创建人：wangl
      */
     @RequestMapping(value = "/shopCard")
-    public String shopCard(User user, HttpServletRequest request, Model model) {
+    public String shopCard(SysUser sysUser, HttpServletRequest request, Model model) {
 
         return "bootstrap/invoice";
     }

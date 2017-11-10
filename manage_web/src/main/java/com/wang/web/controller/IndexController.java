@@ -1,12 +1,9 @@
 package com.wang.web.controller;
 
-import com.wang.module.entity.User;
-import com.wang.module.service.UserService;
+import com.wang.module.entity.SysUser;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
@@ -35,28 +32,21 @@ public class IndexController {
 
     private static final Logger logger = LogManager.getLogger();
 
-    @Autowired
-    private UserService userService;
-
     /**
      * @方法说明：用户信息跳转
      * @时间： 2017-04-14 11:40 AM
      * @创建人：wangl
      */
     @RequestMapping
-    public String bootstrap(User user, Model model,
-                            HttpServletRequest request) {
+    public String bootstrap(HttpServletRequest request) {
 
         logger.info("主页拦截跳转--->{登录方法}");
-        user= (User) request.getSession().getAttribute("loginUser");
+        SysUser sysUser = (SysUser) request.getSession().getAttribute("loginUser");
 
-        if(null != user){
-            int num = userService.countNum(user);
-            if(num > 0){
-                request.getSession().setAttribute("loginUser",user);
-                //登录成功
-                return "bootstrap/index/index";
-            }
+        if (null != sysUser) {
+            request.getSession().setAttribute("loginSysUser", sysUser);
+            //登录成功
+            return "bootstrap/index/index";
         }
 
         return "bootstrap/login/login";

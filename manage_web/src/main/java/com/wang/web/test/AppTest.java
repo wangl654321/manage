@@ -1,6 +1,7 @@
 package com.wang.web.test;
-import com.wang.module.entity.User;
-import com.wang.module.service.UserService;
+
+import com.wang.module.entity.SysUser;
+import com.wang.module.service.SysUserService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.context.ApplicationContext;
@@ -17,17 +18,17 @@ public class AppTest {
         logger.info("启动开始--->{}");
         ApplicationContext application = new ClassPathXmlApplicationContext("applicationContext.xml");
 
-        UserService bean = application.getBean(UserService.class);
+        SysUserService bean = application.getBean(SysUserService.class);
         //User entity = bean.getEntity(2L);
 
         for (int i = 0; i < 10; i++) {
-            User user = new User();
+            SysUser user = new SysUser();
             user.setPassword(getRandomString((int) (Math.random() * 10) + 1));
             user.setName(getRandomString((int) (Math.random() * 10) + 1));
             user.setEmail(getRandomString((int) (Math.random() * 10) + 1)+"@qq.com");
             user.setPhone(tojson(i+1));
 
-            bean.insert(user);
+            bean.saveEntity(user);
         }
 
         logger.info("运行结束--->{}",bean);

@@ -1,6 +1,6 @@
 package com.wang.web.config;
 
-import com.wang.module.entity.User;
+import com.wang.module.entity.SysUser;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
@@ -37,15 +37,15 @@ public class LoginInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
         boolean flag = true;
-        User user=(User)request.getSession().getAttribute("loginUser");
+        SysUser sysUser=(SysUser)request.getSession().getAttribute("loginSysUser");
         logger.info("登录拦截器--->{拦截的地址}" + request.getRequestURL());
 
-        if(null == user){
+        if(null == sysUser){
             logger.info("登录拦截器--->{无法获取到当前登录人请登录后操作!}");
             response.sendRedirect("/");
             flag = false;
         }else{
-            logger.info("登录拦截器--->{当前操作人:}" + user.getName());
+            logger.info("登录拦截器--->{当前操作人:}" + sysUser.getName());
             flag = true;
         }
         return flag;
