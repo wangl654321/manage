@@ -55,8 +55,6 @@ public class LoginController {
     public String login(SysUser sysUser, Model model,
                         HttpServletRequest request) {
 
-
-
         if(null == sysUser.getPassword()){
             return "bootstrap/login/login";
         }
@@ -124,6 +122,7 @@ public class LoginController {
         try {
             logger.info("用户注册--->{开始}");
             user.setPassword(Md5.encode(user.getPassword()));
+            user.setName(user.getUsercode());//设置名称
             sysUserService.saveEntity(user);
         } catch (Exception e) {
             logger.error("用户注册--->{异常}" + e);

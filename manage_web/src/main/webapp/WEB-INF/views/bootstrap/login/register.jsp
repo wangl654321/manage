@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="${ctxStatic}/js/common/vendor/bootstrap/css/bootstrap.css"/>
     <link rel="stylesheet" href="${ctxStatic}/js/common/dist/css/bootstrapValidator.css"/>
 
-    <script type="text/javascript" src="${ctxStatic}/js/common/vendor/jquery/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="${ctxStatic}/js/common/js/jquery-2.0.3.min.js"></script>
     <script type="text/javascript" src="${ctxStatic}/js/common/vendor/bootstrap/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="${ctxStatic}/js/common/dist/js/bootstrapValidator.js"></script>
 </head>
@@ -106,13 +106,18 @@
         $('#searchForm').data('bootstrapValidator').resetForm(true);
     }
 
-    function chankEmailPhone(value) {
-        var values = $(value).val();
+    function changeEmailPhone(value) {
+
+        var values =value.value;
         var isId = value.id;
         isId = isId+"Id";
 
-        $.post("${ctx}/login/user/validation", {"value": values},
-            function (data) {
+        $.ajax({
+            type: "POST",
+            url: "${ctx}/login/user/validation",
+            dataType:"json",
+            data: {"value": values},
+            success:function(data){
                 if(1 == data){
                     $("#"+isId).attr("data-bv-validator","notEmpty");
                     $("#"+isId).html($(value).attr("placeholder")+"已存在,请重新输入!");
@@ -123,7 +128,8 @@
                     $("#"+isId).html("");
                     $("#submitBtn").removeAttrs("disabled");
                 }
-            });
+            }
+        });
     }
 </script>
 
@@ -160,7 +166,7 @@
                                             <label class="block clearfix">
                                                 <div class="form-group">
                                                     <span class="block input-icon input-icon-right">
-                                                        <input name="email" id="email" htmlEscape="false" maxlength="20" onchange="chankEmailPhone(this)" class="form-control" placeholder="邮箱"/>
+                                                        <input name="email" id="email" htmlEscape="false" maxlength="20" onchange="changeEmailPhone(this)" class="form-control" placeholder="邮箱"/>
                                                         <small class="help-block" id="emailId"  style="display: block;color: red"></small>
                                                         <i class="icon-envelope"></i>
                                                      </span>
@@ -170,7 +176,7 @@
                                             <label class="block clearfix">
                                                 <div class="form-group">
                                                     <span class="block input-icon input-icon-right">
-                                                         <input name="phone" id="phone" htmlEscape="false" maxlength="11" onchange="chankEmailPhone(this)" class="form-control" placeholder="手机号"/>
+                                                         <input name="phone" id="phone" htmlEscape="false" maxlength="11" onchange="changeEmailPhone(this)" class="form-control" placeholder="手机号"/>
                                                          <small class="help-block" id="phoneId" style="display: block;color: red"></small>
                                                          <i class="icon-phone"></i>
                                                     </span>
