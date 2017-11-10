@@ -51,7 +51,7 @@
                     }
                 },
 
-                name: {
+                usercode: {
                     message: '用户名是无效的',
                     validators: {
                         notEmpty: {
@@ -180,7 +180,7 @@
                                             <label class="block clearfix">
                                                 <div class="form-group">
                                                     <span class="block input-icon input-icon-right">
-                                                        <input name="name" id="name" htmlEscape="false" maxlength="16" class="form-control" placeholder="用户名"/>
+                                                        <input name="usercode" id="usercode" htmlEscape="false" maxlength="16" class="form-control" placeholder="用户名"/>
                                                         <i class="icon-user"></i>
                                                     </span>
                                                 </div>

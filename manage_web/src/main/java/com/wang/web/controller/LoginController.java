@@ -121,9 +121,13 @@ public class LoginController {
      */
     @RequestMapping(value = "/save")
     public String save(SysUser user, Model model) {
-        logger.info("用户注册--->{}");
-        user.setPassword(Md5.encode(user.getPassword()));
-        sysUserService.saveEntity(user);
+        try {
+            logger.info("用户注册--->{开始}");
+            user.setPassword(Md5.encode(user.getPassword()));
+            sysUserService.saveEntity(user);
+        } catch (Exception e) {
+            logger.error("用户注册--->{异常}" + e);
+        }
         return "redirect:/";
     }
 
